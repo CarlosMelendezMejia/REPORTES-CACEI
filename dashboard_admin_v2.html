@@ -590,16 +590,20 @@
                 }
             };
 
-            // Gráfica 1 - Distribución de niveles AE1 (32 estudiantes)
+            // Etiquetas unificadas y colores para todos los gráficos (categorías de desempeño)
+            const performanceLabels = ['Excelente (90-100%)', 'Bueno (80-89%)', 'Satisfactorio (70-79%)', 'Requiere Mejora (<70%)'];
+            const performanceColors = ['#4CAF50', '#2196F3', '#FF9800', '#f44336'];
+
+            // Gráfica 1 - Pie AE1 (32 estudiantes)
             if (document.getElementById('chart1')) {
                 new Chart(document.getElementById('chart1'), {
-                    type: 'doughnut',
+                    type: 'pie',
                     data: {
-                        labels: ['Excelente (90-100%)', 'Bueno (80-89%)', 'Satisfactorio (70-79%)', 'Requiere Mejora (<70%)'],
+                        labels: performanceLabels,
                         datasets: [{
                             label: 'Estudiantes',
                             data: [14, 12, 4, 2],
-                            backgroundColor: ['#4CAF50', '#2196F3', '#FF9800', '#f44336'],
+                            backgroundColor: performanceColors,
                             borderWidth: 2,
                             borderColor: '#fff'
                         }]
@@ -622,94 +626,31 @@
                 });
             }
 
-            // Gráfica 2 - Progreso temporal AE3 (4 evaluaciones durante el semestre)
+            // Gráfica 2 - Pie AE3 (Distribución de niveles - ejemplo)
             if (document.getElementById('chart2')) {
                 new Chart(document.getElementById('chart2'), {
-                    type: 'line',
+                    type: 'pie',
                     data: {
-                        labels: ['Sep - Diagnóstica', 'Oct - Parcial 1', 'Nov - Parcial 2', 'Dic - Final'],
+                        labels: performanceLabels,
                         datasets: [{
-                            label: 'Promedio Grupal (%)',
-                            data: [68, 74, 79, 82],
-                            borderColor: '#2196F3',
-                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 6,
-                            pointBackgroundColor: '#2196F3',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2
-                        }, {
-                            label: 'Meta Institucional (%)',
-                            data: [75, 75, 75, 75],
-                            borderColor: '#4CAF50',
-                            backgroundColor: 'transparent',
-                            borderDash: [5, 5],
-                            fill: false,
-                            pointRadius: 0
-                        }]
-                    },
-                    options: {
-                        ...chartOptions,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                grid: { color: 'rgba(0,0,0,0.1)' },
-                                ticks: { callback: function (value) { return value + '%'; } }
-                            },
-                            x: { grid: { color: 'rgba(0,0,0,0.1)' } }
-                        }
-                    }
-                });
-            }
-
-            // Gráfica 3 - Desempeño por método de evaluación AE5
-            if (document.getElementById('chart3')) {
-                new Chart(document.getElementById('chart3'), {
-                    type: 'bar',
-                    data: {
-                        labels: ['Exámenes\nEscritos', 'Proyectos\nAplicados', 'Resolución\nde Casos', 'Presentaciones\nOrales'],
-                        datasets: [{
-                            label: 'Promedio (%)',
-                            data: [85, 92, 88, 86],
-                            backgroundColor: [
-                                'rgba(76, 175, 80, 0.8)',
-                                'rgba(33, 150, 243, 0.8)',
-                                'rgba(255, 152, 0, 0.8)',
-                                'rgba(156, 39, 176, 0.8)'
-                            ],
-                            borderColor: [
-                                '#4CAF50',
-                                '#2196F3',
-                                '#FF9800',
-                                '#9C27B0'
-                            ],
+                            label: 'Estudiantes',
+                            // Datos de ejemplo (total 32) para AE3
+                            data: [8, 15, 6, 3],
+                            backgroundColor: performanceColors,
                             borderWidth: 2,
-                            borderRadius: 8,
-                            borderSkipped: false
+                            borderColor: '#fff'
                         }]
                     },
                     options: {
                         ...chartOptions,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                grid: { color: 'rgba(0,0,0,0.1)' },
-                                ticks: { callback: function (value) { return value + '%'; } }
-                            },
-                            x: {
-                                grid: { display: false },
-                                ticks: { maxRotation: 0 }
-                            }
-                        },
                         plugins: {
                             ...chartOptions.plugins,
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return 'Promedio: ' + context.parsed.y + '%';
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((context.parsed / total) * 100);
+                                        return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
                                     }
                                 }
                             }
@@ -718,65 +659,64 @@
                 });
             }
 
-            // Gráfica 4 - Competencias de autoaprendizaje AE7
-            if (document.getElementById('chart4')) {
-                new Chart(document.getElementById('chart4'), {
-                    type: 'radar',
+            // Gráfica 3 - Pie AE5 (Distribución de niveles - ejemplo)
+            if (document.getElementById('chart3')) {
+                new Chart(document.getElementById('chart3'), {
+                    type: 'pie',
                     data: {
-                        labels: [
-                            'Iniciativa para\nAprender',
-                            'Búsqueda de\nRecursos',
-                            'Autoregulación\ndel Estudio',
-                            'Reflexión sobre\nel Aprendizaje',
-                            'Perseverancia\nante Dificultades',
-                            'Uso de\nTecnología'
-                        ],
+                        labels: performanceLabels,
                         datasets: [{
-                            label: 'Promedio Actual (%)',
-                            data: [76, 82, 71, 75, 84, 69],
-                            borderColor: '#FF9800',
-                            backgroundColor: 'rgba(255, 152, 0, 0.2)',
-                            pointBackgroundColor: '#FF9800',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2,
-                            pointRadius: 6
-                        }, {
-                            label: 'Meta Esperada (%)',
-                            data: [80, 80, 80, 80, 80, 80],
-                            borderColor: '#4CAF50',
-                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                            pointBackgroundColor: '#4CAF50',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2,
-                            pointRadius: 4,
-                            borderDash: [5, 5]
+                            label: 'Estudiantes',
+                            // Datos de ejemplo (total 32) para AE5
+                            data: [11, 13, 5, 3],
+                            backgroundColor: performanceColors,
+                            borderWidth: 2,
+                            borderColor: '#fff'
                         }]
                     },
                     options: {
                         ...chartOptions,
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 100,
-                                grid: { color: 'rgba(0,0,0,0.1)' },
-                                angleLines: { color: 'rgba(0,0,0,0.1)' },
-                                pointLabels: {
-                                    font: { size: 11 },
-                                    color: '#666'
-                                },
-                                ticks: {
-                                    display: true,
-                                    stepSize: 20,
-                                    callback: function (value) { return value + '%'; }
-                                }
-                            }
-                        },
                         plugins: {
                             ...chartOptions.plugins,
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return context.dataset.label + ': ' + context.parsed.r + '%';
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((context.parsed / total) * 100);
+                                        return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Gráfica 4 - Pie AE7 (Distribución de niveles - ejemplo)
+            if (document.getElementById('chart4')) {
+                new Chart(document.getElementById('chart4'), {
+                    type: 'pie',
+                    data: {
+                        labels: performanceLabels,
+                        datasets: [{
+                            label: 'Estudiantes',
+                            // Datos de ejemplo (total 32) para AE7
+                            data: [9, 12, 7, 4],
+                            backgroundColor: performanceColors,
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        ...chartOptions,
+                        plugins: {
+                            ...chartOptions.plugins,
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((context.parsed / total) * 100);
+                                        return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
                                     }
                                 }
                             }
